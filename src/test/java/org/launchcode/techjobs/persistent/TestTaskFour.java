@@ -9,13 +9,13 @@ import org.launchcode.techjobs.persistent.controllers.ListController;
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
 import org.launchcode.techjobs.persistent.models.Skill;
-import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
-import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
+import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -110,6 +110,19 @@ public class TestTaskFour extends AbstractTest {
     /*
     * Verifies that HomeController has an @Autowired skillRepository field
     * */
+    @Test
+    public void testHomeControllerHasSkillRepository () throws ClassNotFoundException {
+        Class homeControllerClass = getClassByName("controllers.HomeController");
+        Field skillRepositoryField = null;
+        try {
+            skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
+        } catch (NoSuchFieldException e) {
+            fail("HomeController should have a skillRepository field");
+        }
+
+        assertEquals(SkillRepository.class, skillRepositoryField.getType(), "skillRepository is of incorrect type");
+        assertNotNull(skillRepositoryField.getAnnotation(Autowired.class), "skillRepository must be @Autowired");
+    }
 
 //    /*
 //    * Verifies that HomeController.processAddJobForm queries skillRepository and sets skills properly
@@ -147,7 +160,7 @@ public class TestTaskFour extends AbstractTest {
 
         processAddJobFormMethod.invoke(homeController, job, errors, model, 0, new ArrayList<Skill>());
     }
-
+//
 //    /*
 //    * Verifies that skillRepository and employerRepository fields have been added to ListController
 //    * */

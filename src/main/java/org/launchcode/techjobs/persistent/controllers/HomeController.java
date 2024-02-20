@@ -64,20 +64,21 @@ public class HomeController {
             if (employerRepository.findById(employerId).isPresent()) {
                 Employer employer = employerRepository.findById(employerId).get();
                 newJob.setEmployer(employer);
+
             }
             List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
             newJob.setSkills(skillObjs);
-
+            jobRepository.save(newJob);
             return "redirect:";
         }
     }
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
-            if(jobRepository.findById(jobId).isPresent()){
-                Job job = jobRepository.findById(jobId).get();
-                model.addAttribute("job", job);
-            }
+//            if(jobRepository.findById(jobId).isPresent()){
+//                Job job = jobRepository.findById(jobId).get();
+//                model.addAttribute("job", job);
+//            }
             return "view";
     }
 
